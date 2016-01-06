@@ -5,6 +5,8 @@ INTRODUCTION
 ------------
 This Project detects the boundary points of the object in a given image. By appliying Hough Transform techniques on an image, here we find the coordinates of location of the center and radius of the circular coins (objects) in the given image by finding the local maxima from an accumulator which helps in storing the values of the radii and coordinates of the coin circles. We have used techniques like threshold so as to obstruct the unwanted intensity values in the image like noise, convolution, Sobel edge detecting the edges of the coins and further using the gradient obtained to obtain smoother edges and morphological operations of opening and closing for removal of spurious edges. We have mainly used the algorithm given in textbook as a guideline, a few reference papers and other informative pages over the net for detecting the coins in the image. The algorithm was used along with the material provided by the TAs.
 
+![alt tag](https://raw.githubusercontent.com/exceptionhandle/Coin-Collection/Random-Coin-Detection/HoughCircles.jpg)
+
 APPROACH
 --------
 Our approach was basically following the simple guidelines given and try to find the best fitting technique to implement the same. Initially we tried a few different ways to perform a particular task and figure out which gave the best result.
@@ -45,9 +47,7 @@ We have used the Enthought Canopy software programming in python for this projec
 Vertical Kernel(Dx) Horizontal Kernel (Dy)
 ------------------------------------------
 
-✑ Blurring and Gaussian Filter Application: 
-  ........................................
-In this step we perform the opening operations on the image for five times to remove of noise like small objects and spurious edges. For blurring we have used the Gaussian Filter which again helps in reducing the noise from the image.
+✑ Blurring and Gaussian Filter Application: In this step we perform the opening operations on the image for five times to remove of noise like small objects and spurious edges. For blurring we have used the Gaussian Filter which again helps in reducing the noise from the image.
 
 ✑ Morphological Closing: Dilation is performed 5 times to fill the holes, smoothing the object outline and filling the narrow gulfs between the near the object edge boundaries. Dilation is followed by erosion to retain the original size of the object. Erosion also helps remove small object edges which contribute to noise and are smaller than the structure size of the erosion.
 
@@ -55,7 +55,7 @@ In this step we perform the opening operations on the image for five times to re
 
 ✑ Thinning Edges: Here using the gradient Dx and Dy obtained from the previous step we find the angles between the horizontal and vertical edges detected using the arctan function from SciPy library. This function gives the tangent value of the angle formed in radians. Angles near the error range of 22.5 degrees at 0, 45, 90 degrees is approximated to these angles in the first, second, third and fourth quadrant. This in turn is used in thinning of the object boundary. The intensities are checked of every neighboring pixels of the edge detected and the stronger ones are retained to obtain a better thin version of edges of the circle.
 
-✑ Thresholding: In this step we applied a threshold value on the image obtained from the gradient of the Sobel convolution for removal of unwanted edges with the intensity values that were not strong enough. Post thresholding, we removed the horizontal edges existing in the
+✑ Thresholding: In this step we applied a threshold value on the image obtained from the gradient of the Sobel convolution for removal of unwanted edges with the intensity values that were not strong enough. Post thresholding, we removed the horizontal edges existing in the vertical edges detected.
 
 -1 0 1
 
@@ -63,7 +63,9 @@ In this step we perform the opening operations on the image for five times to re
 
 -1 0 1
 
-vertical edges detected. Then we filled recursively the edges in the horizontal edge detected image that were having pixel values present in the vertical image at neighboring locations.
+![alt tag](https://raw.githubusercontent.com/exceptionhandle/Coin-Collection/Random-Coin-Detection/convolutionDetectedCirclesGradHori.jpg)
+
+ Then we filled recursively the edges in the horizontal edge detected image that were having pixel values present in the vertical image at neighboring locations.
 Image after Application of convolution, thinning, thresholding on the image
 
 ✑ Detection of Circle: This step is performed to figure out the radius values for the Hough circles to be generated. After hit and trial we found the radii with minimum and maximum value required which successfully captures coins of minimum and maximum size. We then captured circles with 3 pixel radii approximation. By seeking for circles made in the approximation range of 3 and thereby storing the centers in the new array, taken as “cntrPts”. We then iteratively check for the circles with next 3 radii pixel approximations and store them in the “cntrPts” array. The center points of the circle are found by making the circle of the 3 radii values at each edge pixel storing them in the array named “countIntrsct”. “countIntrsct” array stores the frequency of intersection of these circles. The “countIntrsct” array is searched for the local maxima with the adaptive frequency threshold starting at 46 and incremented at each iteration to find a bigger circle. The accumulator is used to store the radii values along with the centers of the detected circles. The accumulator is also referred while searching for a circle with larger radii
@@ -71,3 +73,4 @@ Image after Application of convolution, thinning, thresholding on the image
 ✑ if there is already a smaller circle found in the range of 20 pixels, then the circle finding step is avoided to location. The “storeCenter” function adds the local maxima values which contributes to the center of the circle to the “cntrPts” based thresholding and iterations of the circle formations.
 
 ✑ Result: Display the circle on intensity 255 a little outside the edges of the coins so as to include the entire coin inside the circle generated. The final image generated is as below.
+![alt tag](https://raw.githubusercontent.com/exceptionhandle/Coin-Collection/Random-Coin-Detection/DetectCirclesHoughTransform.jpg)
