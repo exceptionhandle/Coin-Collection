@@ -37,13 +37,17 @@ We have used the Enthought Canopy software programming in python for this projec
 ✑ Preprocessing: The first step we performed was to take the coin image as the input using Opencv2 library which will be used for the further processing. We get the image height and width using the numpy library function shape. As a part of preprocessing, we have created horizontal and vertical Sobel kernels with values as follows which will be used to perform edge detection on the image by convolution.
 
 -1 -2 -1
+
  0  0  0
+
  1  2  1
 
 Vertical Kernel(Dx) Horizontal Kernel (Dy)
 ------------------------------------------
 
-✑ Blurring and Gaussian Filter Application: In this step we perform the opening operations on the image for five times to remove of noise like small objects and spurious edges. For blurring we have used the Gaussian Filter which again helps in reducing the noise from the image.
+✑ Blurring and Gaussian Filter Application: 
+  ........................................
+In this step we perform the opening operations on the image for five times to remove of noise like small objects and spurious edges. For blurring we have used the Gaussian Filter which again helps in reducing the noise from the image.
 
 ✑ Morphological Closing: Dilation is performed 5 times to fill the holes, smoothing the object outline and filling the narrow gulfs between the near the object edge boundaries. Dilation is followed by erosion to retain the original size of the object. Erosion also helps remove small object edges which contribute to noise and are smaller than the structure size of the erosion.
 
@@ -54,7 +58,9 @@ Vertical Kernel(Dx) Horizontal Kernel (Dy)
 ✑ Thresholding: In this step we applied a threshold value on the image obtained from the gradient of the Sobel convolution for removal of unwanted edges with the intensity values that were not strong enough. Post thresholding, we removed the horizontal edges existing in the
 
 -1 0 1
+
 -2 0 2
+
 -1 0 1
 
 vertical edges detected. Then we filled recursively the edges in the horizontal edge detected image that were having pixel values present in the vertical image at neighboring locations.
